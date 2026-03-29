@@ -1,0 +1,26 @@
+{
+  "name": "@aceandgaming/swarmfm-api",
+  "version": "1.0.0",
+  "description": "A API for integrating and controlling SwarmFM",
+  "main": "dist/index.ts",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "swarmfm",
+    "music",
+    "iframe",
+    "api",
+    "typescript"
+  ],
+  "author": "aceandgaming",
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "typescript": "^6.0.2"
+  }
+}
