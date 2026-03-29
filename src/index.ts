@@ -95,7 +95,7 @@ export default class SwarmFMApi {
         prams.set("autoplay", ops.autoplay.toString())
         prams.set("nocontrols", (!ops.controls).toString())
 
-        iframe.src = `https://swarmfm.swarmtunes.com/${prams.toString()}`
+        iframe.src = `https://swarmfm.swarmtunes.com/?${prams.toString()}`
 
         this.Attach(iframe)
         return iframe
