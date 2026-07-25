@@ -19,16 +19,17 @@ interface SwarmFMEventMap {
     "onpause": () => void
     "onmetadatachange": (metadata: SwarmFMMetadata) => void
     "onready": () => void
+    "ontimeupdate": (current: number) => void
 }
 
 export default class SwarmFMApi {
-    public get Playing() {
-        return this.playing
+    public get playing() {
+        return this.playingState
     }
-    public get Paused() {
+    public get paused() {
         return !this.playing
     }
-    public set Playing(playing: boolean) {
+    public set playing(playing: boolean) {
         if (playing) {
             this.Play()
         }
@@ -36,23 +37,28 @@ export default class SwarmFMApi {
             this.Pause()
         }
     }
-    public set Paused(paused: boolean) {
-        this.Playing = !paused
+    public set paused(paused: boolean) {
+        this.playing = !paused
     }
 
-    public get Current() {
+    public get current() {
         return this.metadata?.current
     }
-    public get Previous() {
+    public get previous() {
         return this.metadata?.previous
     }
-    public get Next() {
+    public get next() {
         return this.metadata?.next
+    }
+    public get currentTime() {
+        return this.time
     }
 
     private metadata?: SwarmFMMetadata
     private iframe?: HTMLIFrameElement
-    private playing = false
+    private playingState: boolean = false
+    private ready: boolean = false
+    private time: number = 0
 
     private callbacks: {
         [key in keyof SwarmFMEventMap]?: SwarmFMEventMap[keyof SwarmFMEventMap][]
@@ -60,34 +66,39 @@ export default class SwarmFMApi {
 
     public Attach(iframe: HTMLIFrameElement) {
         this.iframe = iframe
+        this.time = 0
 
         window.onmessage = (event) => {
-            if (event.origin !== "https://swarmfm.swarmtunes.com") {
+            if (event.origin !== iframe.contentWindow?.location.origin) {
                 return
             }
+
             switch (event.data.type) {
                 case "SWARMFM_METADATA":
                     this.metadata = event.data.data
-                    if (this.metadata) {
-                        this.dispatchEvent("onmetadatachange", this.metadata)
-                    }
+                    this.dispatchEvent("onmetadatachange", this.metadata!)
                     break
                 case "SWARMFM_PLAYING":
-                    this.playing = true
+                    this.playingState = true
                     this.dispatchEvent("onplay")
                     break
                 case "SWARMFM_PAUSED":
-                    this.playing = false
+                    this.playingState = false
                     this.dispatchEvent("onpause")
                     break
                 case "SWARMFM_READY":
                     this.dispatchEvent("onready")
+                    this.ready = true
+                    break
+                case "SWARMFM_TIMEUPDATE":
+                    this.dispatchEvent("ontimeupdate")
+                    this.time = event.data.data
                     break
             }
         }
     }
 
-    public CreateIFrame(ops: { silent: "site" | "injector" | "all", "autoplay": boolean, "controls": boolean } = { silent: "injector", autoplay: false, controls: true }) {
+    public CreateIFrame(ops: { silent: "site" | "injector" | "all" | "none", autoplay: boolean, controls: boolean } = { silent: "injector", autoplay: false, controls: true }) {
         const iframe = document.createElement("iframe")
 
         const prams = new URLSearchParams()
@@ -115,6 +126,10 @@ export default class SwarmFMApi {
 
     public WaitForReady() {
         return new Promise<void>((resolve) => {
+            if (this.ready) {
+                resolve()
+                return
+            }
             this.addEventListener("onready", () => {
                 resolve()
             })

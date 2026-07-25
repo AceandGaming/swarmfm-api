@@ -8,17 +8,17 @@ This api uses server-side injection and thus the normal SwarmFM domains won't wo
 
 ## Install
 
-`npm i @aceandgaming/swarmfm-api`
+`npm install @aceandgaming/swarmfm-api`
 
 ## Usage
 ```TS
-import SwarmFMApi from 'swarmfm-api';
+import SwarmFMApi from '@aceandgaming/swarmfm-api';
 
 // Create an instance
 const api = new SwarmFMApi();
 
 // Create and attach iframe
-const iframe = api.CreateIFrame({ silent: 'injector', autoplay: false, controls: true });
+const iframe = api.CreateIFrame({ silent: 'none', autoplay: false, controls: true });
 document.body.appendChild(iframe);
 
 api.WaitForReady().then(() => {
@@ -39,11 +39,12 @@ api.addEventListener('onmetadatachange', (metadata) => console.log('Now playing:
 
 |Property|Type|Description|
 |--------|----|-----------|
-|`Playing`      |`boolean`|                     Get or set whether the player is currently playing. Setting `true` plays, false `pauses`.|
-|`Paused`       |`boolean`|                     Get or set whether the player is paused. Inverse of `Playing`.|
-|`Current`      |`TrackMetadata?`|   Returns metadata of the currently playing track.|
-|`Previous`     |`TrackMetadata?`|   Returns metadata of the previous track.|
-|`Next`         |`TrackMetadata?`|   Returns metadata of the next track.|
+|`playing`      |`boolean`|                     Get or set whether the player is currently playing. Setting `true` plays, false `pauses`.|
+|`paused`       |`boolean`|                     Get or set whether the player is paused. Inverse of `Playing`.|
+|`current`      |`TrackMetadata?`|   Returns metadata of the currently playing track.|
+|`previous`     |`TrackMetadata?`|   Returns metadata of the previous track.|
+|`next`         |`TrackMetadata?`|   Returns metadata of the next track.|
+|`currentTime`         |`number`|   The current time played.|
 
 ### Methods
 
@@ -65,3 +66,4 @@ api.addEventListener('onmetadatachange', (metadata) => console.log('Now playing:
 | `onpause`          | None                        | Triggered when playback is paused.                               |
 | `onmetadatachange` | `metadata: SwarmFMMetadata` | Triggered when track metadata updates (current, previous, next). |
 | `onready`          | None                        | Triggered when the player is ready for playback.                 |
+| `ontimeupdate`     | `current: number`           | Called when the currentTime updates                              |
