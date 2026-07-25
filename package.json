@@ -1,8 +1,8 @@
 {
   "name": "@aceandgaming/swarmfm-api",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "A API for integrating and controlling SwarmFM",
-  "main": "dist/index.ts",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
