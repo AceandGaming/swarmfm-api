@@ -53,6 +53,12 @@ export default class SwarmFMApi {
     public get currentTime() {
         return this.time
     }
+    public set volume(val: number) {
+        this.iframe?.contentWindow?.postMessage({
+            type: "SWARMFM_VOLUME",
+            data: val
+        }, "*")
+    }
 
     private metadata?: SwarmFMMetadata
     private iframe?: HTMLIFrameElement
@@ -69,7 +75,7 @@ export default class SwarmFMApi {
         this.time = 0
 
         window.onmessage = (event) => {
-            if (event.origin !== iframe.contentWindow?.location.origin) {
+            if (event.origin !== (new URL(iframe.src).origin)) {
                 return
             }
 

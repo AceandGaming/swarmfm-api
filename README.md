@@ -45,6 +45,8 @@ api.addEventListener('onmetadatachange', (metadata) => console.log('Now playing:
 |`previous`     |`TrackMetadata?`|   Returns metadata of the previous track.|
 |`next`         |`TrackMetadata?`|   Returns metadata of the next track.|
 |`currentTime`         |`number`|   The current time played.|
+|`volume`         |`number`|   The volume|
+
 
 ### Methods
 
