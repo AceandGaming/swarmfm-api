@@ -4,11 +4,11 @@ music playback in your web applications. It allows you to embed the SwarmFM play
 
 **Note: This api is unofficial and not affiliated with SwarmFM or boop.**
 
-This api uses server-side injection and thus the normal SwarmFM domains won't work. If creating the iframe manually you must use `swarmfm.swarmtunes.com`.
+This api uses server-side injection and thus the normal SwarmFM domains won't work. If creating the iframe manually you must use a site like `swarmfm.swarmtunes.com` or inject the site yourself.
 
 ## Install
 
-`>npm i @aceandgaming/swarmfm-api`
+`npm i @aceandgaming/swarmfm-api`
 
 ## Usage
 ```TS
